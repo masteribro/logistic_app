@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:logistic_appp/Constant_widget/global_variables.dart';
 
 
 class AuthModel {
@@ -11,13 +12,13 @@ class AuthModel {
   final TextEditingController regFirstNameController = TextEditingController();
   final TextEditingController regLastNameController = TextEditingController();
   final TextEditingController regPhoneNumberController = TextEditingController();
-  final TextEditingController regEmailController = TextEditingController();
-  final TextEditingController regPasswordController = TextEditingController();
+  final TextEditingController regEmailController = TextEditingController(text: email);
+  final TextEditingController regPasswordController = TextEditingController(text: password);
   final TextEditingController regConfirmPassController = TextEditingController();
 
 
 
-  // final TextEditingController regdeviceTypeController = TextEditingController();
+
   final GlobalKey<FormState> regFormKey = GlobalKey<FormState>();
 
   //insert phone

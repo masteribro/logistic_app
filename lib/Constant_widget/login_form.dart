@@ -3,10 +3,11 @@ import 'package:flutter_svg/svg.dart';
 import 'package:logistic_appp/Constant_widget/rounded_button.dart';
 import 'package:logistic_appp/Constant_widget/rounded_input.dart';
 import 'package:logistic_appp/Constant_widget/rounded_password_input.dart';
+import 'package:logistic_appp/model/all_model.dart';
 
 
 class LoginForm extends StatelessWidget {
-  const LoginForm({
+  LoginForm({
     Key? key,
     required this.isLogin,
     required this.animationDuration,
@@ -18,7 +19,7 @@ class LoginForm extends StatelessWidget {
   final Duration animationDuration;
   final Size size;
   final double defaultLoginSize;
-
+AuthModel model = AuthModel();
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -53,9 +54,9 @@ class LoginForm extends StatelessWidget {
 
                   const SizedBox(height: 40),
 
-                  const RoundedInput(icon: Icons.mail, hint: 'Username'),
+                  RoundedInput(icon: Icons.mail, hint: 'Username', controller: model.regLastNameController,),
 
-                  const RoundedPasswordInput(hint: 'Password'),
+                  RoundedPasswordInput(hint: 'Password', password: model.passwordController,),
 
                   const SizedBox(height: 10),
 

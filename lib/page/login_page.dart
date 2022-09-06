@@ -1,10 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logistic_appp/Constant_widget/colors.dart';
+import 'package:logistic_appp/model/user.dart';
+import 'package:provider/provider.dart';
 
 import '../Constant_widget/cancel_button.dart';
 import '../Constant_widget/login_form.dart';
 import '../Constant_widget/register_form.dart';
+import 'Home_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -30,9 +33,12 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
     animationController!.dispose();
     super.dispose();
   }
-
+  final GlobalKey<FormState> login_key = GlobalKey<FormState>();
+  final GlobalKey<FormState> reg_key = GlobalKey<FormState>();
+  bool key = true;
   @override
   Widget build(BuildContext context) {
+
     Size size = MediaQuery.of(context).size;
 
     double viewInset = MediaQuery.of(context).viewInsets.bottom; // we are using this to determine Keyboard is opened or not
@@ -42,70 +48,72 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
     containerSize = Tween<double>(begin: size.height * 0.1, end: defaultRegisterSize).animate(CurvedAnimation(parent: animationController!, curve: Curves.linear));
 
     return Scaffold(
-      body: Stack(
-        children: [
-          // Lets add some decorations
-          Positioned(
-              top: 100,
-              right: -50,
-              child: Container(
-                width: 100,
-                height: 100,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(50),
-                    color: AppColors.kPrimaryColor
-                ),
-              )
-          ),
+      body: Form(
+        key: key? login_key: reg_key,
+        child: Stack(
+          children: [
+            Positioned(
+                top: 100,
+                right: -50,
+                child: Container(
+                  width: 100,
+                  height: 100,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(50),
+                      color: AppColors.kPrimaryColor
+                  ),
+                )
+            ),
 
-          Positioned(
-              top: -50,
-              left: -50,
-              child: Container(
-                width: 200,
-                height: 200,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(100),
-                    color: AppColors.kPrimaryColor
-                ),
-              )
-          ),
+            Positioned(
+                top: -50,
+                left: -50,
+                child: Container(
+                  width: 200,
+                  height: 200,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(100),
+                      color: AppColors.kPrimaryColor
+                  ),
+                )
+            ),
 
-          // Cancel Button
-          CancelButton(
-            isLogin: isLogin,
-            animationDuration: animationDuration,
-            size: size,
-            animationController: animationController,
-            tapEvent: isLogin ? null : () { // returning null to disable the button
-              animationController!.reverse();
-              setState(() {
-                isLogin = !isLogin;
-              });
-            },
-          ),
+            // Cancel Button
+            CancelButton(
+              isLogin: isLogin,
+              animationDuration: animationDuration,
+              size: size,
+              animationController: animationController,
+              tapEvent: isLogin ? null : () {
+                animationController!.reverse();
+                setState(() {
+                  isLogin = !isLogin;
+                });
+              },
+            ),
 
-          // Login Form
-          LoginForm(isLogin: isLogin, animationDuration: animationDuration, size: size, defaultLoginSize: defaultLoginSize),
+            // Login Form
+            LoginForm(isLogin: isLogin, animationDuration: animationDuration, size: size, defaultLoginSize: defaultLoginSize),
 
-          // Register Container
-          AnimatedBuilder(
-            animation: animationController!,
-            builder: (context, child) {
-              if (viewInset == 0 && isLogin) {
-                return buildRegisterContainer();
-              } else if (!isLogin) {
-                return buildRegisterContainer();
-              }
+            // Register Container
+            AnimatedBuilder(
+              animation: animationController!,
+              builder: (context, child) {
+                if (viewInset == 0 && isLogin) {
+                  return buildRegisterContainer();
+                } else if (!isLogin) {
+                  return buildRegisterContainer();
+                }
 
-              // Returning empty container to hide the widget
-              return Container();
-            },
-          ),
+                // Returning empty container to hide the widget
+                return Container();
+              },
+            ),
 
-          // Register Form
-          RegisterForm(isLogin: isLogin, animationDuration: animationDuration, size: size, defaultLoginSize: defaultRegisterSize),
-        ],
+            // Register Form
+            RegisterForm(isLogin: isLogin, animationDuration: animationDuration, size: size, defaultLoginSize: defaultRegisterSize),
+          ],
+        ),
       ),
     );
   }
