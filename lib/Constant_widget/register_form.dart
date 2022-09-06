@@ -5,7 +5,9 @@ import 'package:logistic_appp/Constant_widget/rounded_button_registration.dart';
 import 'package:logistic_appp/Constant_widget/rounded_input.dart';
 import 'package:logistic_appp/Constant_widget/rounded_password_input.dart';
 import 'package:logistic_appp/model/all_model.dart';
+import 'package:logistic_appp/page/Home_page.dart';
 
+import '../Utils/router.dart';
 import '../utils/firebase_service.dart';
 import 'global_variables.dart';
 
@@ -28,10 +30,10 @@ class RegisterForm extends StatefulWidget {
 }
 
 class _RegisterFormState extends State<RegisterForm> {
+
   AuthModel model = AuthModel();
   final AuthService _auth = AuthService();
   String error = '';
-
   @override
   Widget build(BuildContext context) {
     return AnimatedOpacity(
@@ -80,10 +82,13 @@ class _RegisterFormState extends State<RegisterForm> {
 
                     RoundedButtonRegistration(title: 'SIGN UP',onTap: ()async{
                       if(model.regFormKey.currentState!.validate()){
-                        // String password,email;
+                        String password,email;
                         password = model.regPasswordController.text.trim();
                         email = model.regEmailController.text.trim();
-                        dynamic result = await _auth.registerWithEmailAndPassword(email!, password!);
+                        dynamic result = await _auth.registerWithEmailAndPassword(email, password);
+
+
+                        Routers.push(context, Home());
                         if(result == null) {
                           setState(() {
                             error = 'Please supply a valid email';
@@ -93,9 +98,11 @@ class _RegisterFormState extends State<RegisterForm> {
 
                          },),
                     //
-                    // InkWell(
-                    //   onTap: ()=>print('model ${model.regPasswordController.text} ${model.regEmailController.text}'),
-                    //     child: const Text('print', style: TextStyle(fontSize: 30,color:Colors.black,fontWeight: FontWeight.w700),)),
+                    InkWell(
+                      onTap: (){
+
+                      },
+                        child: const Text('print', style: TextStyle(fontSize: 30,color:Colors.black,fontWeight: FontWeight.w700),)),
 
                     const SizedBox(height: 10),
                   ],
